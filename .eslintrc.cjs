@@ -31,5 +31,9 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
+    'max-len': ["error", { "code": 120, "ignoreStrings": true }],
+    'react/jsx-props-no-spreading': 'off',
+    'react/require-default-props': 'off',
+    'jsx-quotes': [2, 'prefer-single'],
   },
 };
