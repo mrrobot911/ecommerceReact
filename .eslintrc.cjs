@@ -2,12 +2,13 @@ module.exports = {
   root: true,
   env: { browser: true, es2020: true },
   extends: [
+    'airbnb',
     'eslint:recommended',
+    'airbnb-typescript',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
     'plugin:import/typescript',
-    'airbnb',
-    'airbnb-typescript',
+    'plugin:prettier/recommended',
   ],
   settings: {
     'import/resolver': {
@@ -17,7 +18,7 @@ module.exports = {
   },
   ignorePatterns: ['dist', 'vite.config.ts', 'tailwind.config.ts', 'vitest.config.ts'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh', '@typescript-eslint', 'simple-import-sort'],
+  plugins: ['react-refresh', '@typescript-eslint', 'simple-import-sort', 'prettier'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -55,7 +56,9 @@ module.exports = {
     },
   ],
   rules: {
-    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    'react-refresh/only-export-components': 'off',
+    'react/jsx-no-constructed-context-values': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
     'react/react-in-jsx-scope': 'off',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
@@ -63,5 +66,22 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
     'jsx-quotes': [2, 'prefer-single'],
+    'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
+    'import/prefer-default-export': 'off',
+    'react/prop-types': 'off',
+    'prettier/prettier': [
+      'error',
+      {
+        printWidth: 120,
+        endOfLine: 'lf',
+        semi: true,
+        tabWidth: 2,
+        allowParens: 'always',
+        jsxSingleQuote: true,
+        singleQuote: true,
+        trailingComma: 'all',
+        plugins: ['prettier-plugin-tailwindcss'],
+      },
+    ],
   },
 };
