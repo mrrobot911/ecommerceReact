@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
 
-export default function App() {
+export default function Root() {
   return (
     <div className='p-5'>
       <h1 className='text-3xl mb-2 font-bold text-red-500 underline'>Hello world!</h1>
