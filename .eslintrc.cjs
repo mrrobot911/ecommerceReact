@@ -18,7 +18,7 @@ module.exports = {
   },
   ignorePatterns: ['dist', 'vite.config.ts', 'tailwind.config.ts', 'vitest.config.ts'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh', '@typescript-eslint', 'simple-import-sort', 'prettier'],
+  plugins: ['react-refresh', '@typescript-eslint', 'simple-import-sort', 'unused-imports', 'prettier'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -65,10 +65,20 @@ module.exports = {
     'max-len': ['error', { code: 120, ignoreStrings: true }],
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
-    'jsx-quotes': [2, 'prefer-single'],
     'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
     'import/prefer-default-export': 'off',
     'react/prop-types': 'off',
+    'no-unused-vars': 'off',
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+      'warn',
+      {
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        args: 'after-used',
+        argsIgnorePattern: '^_',
+      },
+    ],
     'prettier/prettier': [
       'error',
       {
