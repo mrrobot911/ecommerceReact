@@ -46,49 +46,59 @@ Before you begin, ensure you have the following installed on your machine:
 ### Setup
 
 1. **Clone the Repository**:
-   `bash git clone <repository_url>`
+   `git clone <repository_url>`
 2. **Navigate to the Project Directory**:
-   `bash cd <project_directory>`
+   `cd <project_directory>`
 3. **Install Dependencies**:
    If you're using npm:
-   `bash npm install`
+   `npm install`
    If you're using yarn:
-   `bash yarn install`
+   `yarn install`
 
 ### Development
 
 To run the project in development mode:
 
-`bash npm run dev # or yarn dev`
-This command starts the development server using Vite. You can access the project in your browser at http://localhost:3000.
+```bash
+npm run dev # or yarn dev
+```
+This command starts the development server using Vite. You can access the project in your browser at http://localhost:5173.
 
 ### Building for Production
 
 To build the project for production:
 
-`bash npm run build # or yarn build`
+```bash
+npm run build # or yarn build
+```
 This command compiles TypeScript files using tsc and then triggers Vite to build the project for production. The optimized assets will be generated in the dist directory.
 
 ### Testing
 
 To run tests:
 
-`bash npm test # or yarn test`
+```bash
+npm test # or yarn test
+```
 This command executes the test suite using vitest or any other custom test runner specific to your project.
 
 ### Linting
 
 To lint the codebase:
 
-`bash npm run lint # or yarn lint`
+```bash
+npm run lint # or yarn lint
+```
 This command runs ESLint to enforce coding standards and identify potential issues in the TypeScript and TypeScript React files.
 
 ### Preview Production Build
 
 To preview the production build locally:
 
-`bash npm run preview # or yarn preview`
-This command launches Vite in preview mode, serving the optimized production assets from the dist directory. You can access the preview in your browser at http://localhost:5000.
+```bash
+npm run preview # or yarn preview
+```
+This command launches Vite in preview mode, serving the optimized production assets from the dist directory. You can access the preview in your browser at http://localhost:4173.
 
 ## Contributing
 
