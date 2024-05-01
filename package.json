@@ -15,8 +15,8 @@
   },
   "lint-staged": {
     "*.ts": [
-      "prettier --ignore-path --write",
-      "eslint"
+      "eslint",
+      "prettier --write"
     ]
   },
   "dependencies": {

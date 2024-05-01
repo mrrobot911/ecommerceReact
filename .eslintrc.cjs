@@ -16,7 +16,7 @@ module.exports = {
       node: true,
     },
   },
-  ignorePatterns: ['dist', 'vite.config.ts', 'tailwind.config.ts', 'vitest.config.ts'],
+  ignorePatterns: ['dist', 'vite.config.ts', 'tailwind.config.ts', 'vitest.config.ts', 'postcss.config.js'],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', '@typescript-eslint', 'simple-import-sort', 'unused-imports', 'prettier'],
   parserOptions: {
