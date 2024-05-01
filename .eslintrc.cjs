@@ -15,7 +15,7 @@ module.exports = {
       node: true,
     },
   },
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts', 'tailwind.config.ts'],
+  ignorePatterns: ['dist', 'vite.config.ts', 'tailwind.config.ts', 'vitest.config.ts'],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', '@typescript-eslint', 'simple-import-sort'],
   parserOptions: {
@@ -24,7 +24,8 @@ module.exports = {
     },
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: './tsconfig.json',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
   },
   overrides: [
     // override "simple-import-sort" config
@@ -46,19 +47,19 @@ module.exports = {
               // Other relative imports. Put same-folder imports and `.` last.
               ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
               // Style imports.
-              ['^.+\\.?(css)$']
-            ]
-          }
-        ]
-      }
-    }
+              ['^.+\\.?(css)$'],
+            ],
+          },
+        ],
+      },
+    },
   ],
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'react/react-in-jsx-scope': 'off',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
-    'max-len': ['error', { 'code': 120, 'ignoreStrings': true }],
+    'max-len': ['error', { code: 120, ignoreStrings: true }],
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
     'jsx-quotes': [2, 'prefer-single'],

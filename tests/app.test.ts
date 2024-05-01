@@ -1,5 +1,5 @@
 import { describe, test } from 'vitest';
 
 describe('Accordion test', () => {
-  test('Should show title', () => {});
+  test('should show title all the time', () => {});
 });
