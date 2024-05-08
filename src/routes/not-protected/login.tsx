@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import { getApiRoot } from '@/api/BuildClient';
 import SEO from '@/components/seo';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { LOGIN_FORM_INPUTS } from '@/consts/auth';
+import { loginCustomer } from '@/services/handlers/customerHandler';
 
 // ? Придумать цикл
 const formSchema = z.object({
@@ -26,17 +26,14 @@ export default function Login() {
   });
 
   const createCustomer = async (values: z.infer<typeof formSchema>) => {
-    const response = await getApiRoot
-      .customers()
-      .post({ body: { email: values.username, password: values.password } })
-      .execute();
-    return response.body;
+    const data = await loginCustomer({ email: values.username, password: values.password });
+    return data;
   };
-  // function onSubmit() {}
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const resp = await createCustomer(values);
-      console.log(resp);
+      console.log(resp.customer);
     } catch (e) {
       console.log(e);
     }
