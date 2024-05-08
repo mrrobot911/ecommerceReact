@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+import { getApiRoot } from '@/api/BuildClient';
 import SEO from '@/components/seo';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
@@ -24,12 +25,22 @@ export default function Login() {
     },
   });
 
-  function onSubmit() {}
-  // function onSubmit(values: z.infer<typeof formSchema>) {
-  //   // Do something with the form values.
-  //   // ✅ This will be type-safe and validated.
-  //   // console.log(values);
-  // }
+  const createCustomer = async (values: z.infer<typeof formSchema>) => {
+    const response = await getApiRoot
+      .customers()
+      .post({ body: { email: values.username, password: values.password } })
+      .execute();
+    return response.body;
+  };
+  // function onSubmit() {}
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const resp = await createCustomer(values);
+      console.log(resp);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <>
