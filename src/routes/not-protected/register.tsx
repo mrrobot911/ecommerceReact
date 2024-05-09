@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
@@ -8,31 +8,51 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { REGISTER_FORM_INPUTS } from '@/consts/auth';
+import { useAuth } from '@/provider/auth-provider';
+import { loginCustomer } from '@/services/customer-handler/customer-auther';
+import { createCustomer } from '@/services/customer-handler/customer-creator';
 
 const formSchema = z.object({
-  username: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
   password: z.string(),
   'confirm password': z.string(),
   email: z.string(),
 });
 
 export default function Register() {
+  const tokenStore = useAuth();
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
+      firstName: '',
+      lastName: '',
       password: '',
       'confirm password': '',
       email: '',
     },
   });
 
-  function onSubmit() {}
-  // function onSubmit(values: z.infer<typeof formSchema>) {
-  //   // Do something with the form values.
-  //   // ✅ This will be type-safe and validated.
-  //   console.log(values);
-  // }
+  async function onSubmit({ email, password, firstName, lastName }: z.infer<typeof formSchema>) {
+    const data = await createCustomer({ email, password, firstName, lastName })
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error;
+      });
+
+    if (data.customer) {
+      const signInData = await loginCustomer({ email, password });
+
+      if (signInData.customer) {
+        const token = localStorage.getItem('custTokenDevision');
+        tokenStore?.updateToken(token);
+        navigate('/', { replace: true });
+      }
+    }
+  }
 
   return (
     <>

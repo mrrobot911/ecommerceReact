@@ -1,4 +1,8 @@
-import { createApiBuilderFromCtpClient, CustomerSignInResult, MyCustomerSignin } from '@commercetools/platform-sdk';
+import {
+  createApiBuilderFromCtpClient,
+  type CustomerSignInResult,
+  type MyCustomerSignin,
+} from '@commercetools/platform-sdk';
 
 import { anonymousSessionFlowCtpClient } from '@/services/flows/anonymous';
 import { loginUserCtpClient } from '@/services/flows/password';

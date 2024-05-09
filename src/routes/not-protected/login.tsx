@@ -31,7 +31,6 @@ export default function Login() {
   async function onSubmit({ email, password }: z.infer<typeof formSchema>) {
     const data = await loginCustomer({ email, password });
 
-    console.log(data.customer);
     if (data.customer) {
       const token = localStorage.getItem('custTokenDevision');
       tokenStore?.updateToken(token);

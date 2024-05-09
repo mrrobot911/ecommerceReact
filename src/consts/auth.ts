@@ -11,7 +11,11 @@ export const LOGIN_FORM_INPUTS = [
 
 export const REGISTER_FORM_INPUTS = [
   {
-    name: 'username',
+    name: 'firstName',
+    type: 'text',
+  },
+  {
+    name: 'lastName',
     type: 'text',
   },
   {
