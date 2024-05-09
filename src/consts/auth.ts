@@ -1,29 +1,29 @@
 export const LOGIN_FORM_INPUTS = [
   {
-    name: "username",
-    type: "text",
+    name: 'email',
+    type: 'email',
   },
   {
-    name: "password",
-    type: "password",
+    name: 'password',
+    type: 'password',
   },
 ] as const;
 
 export const REGISTER_FORM_INPUTS = [
   {
-    name: "username",
-    type: "text",
+    name: 'username',
+    type: 'text',
   },
   {
-    name: "password",
-    type: "password",
+    name: 'password',
+    type: 'password',
   },
   {
-    name: "confirm password",
-    type: "password",
+    name: 'confirm password',
+    type: 'password',
   },
   {
-    name: "email",
-    type: "email",
+    name: 'email',
+    type: 'email',
   },
 ] as const;
