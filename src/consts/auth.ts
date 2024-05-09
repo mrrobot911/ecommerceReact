@@ -1,7 +1,7 @@
 export const LOGIN_FORM_INPUTS = [
   {
-    name: 'username',
-    type: 'text',
+    name: 'email',
+    type: 'email',
   },
   {
     name: 'password',

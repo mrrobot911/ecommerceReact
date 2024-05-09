@@ -1,13 +1,12 @@
 import { createApiBuilderFromCtpClient, CustomerSignInResult, MyCustomerSignin } from '@commercetools/platform-sdk';
 
-import { projectKey } from '@/services/BuildClient';
+import { anonymousSessionFlowCtpClient } from '@/services/flows/anonymous';
+import { loginUserCtpClient } from '@/services/flows/password';
+import { PROJECT_KEY } from '@/services/helpers/api-client-details-setter';
 
-import { anonymousSessionFlowCtpClient } from '../flow/withAnonymousSessionFlowClientBuilder';
-import { loginUserCtpClient } from '../flow/withPasswordFlowClientBuilder';
-
-export const loginAnonymousCustomer = (request: MyCustomerSignin): Promise<CustomerSignInResult> => {
+export const loginAnonymousCustomer = async (request: MyCustomerSignin): Promise<CustomerSignInResult> => {
   const apiRoot = createApiBuilderFromCtpClient(anonymousSessionFlowCtpClient).withProjectKey({
-    projectKey,
+    projectKey: PROJECT_KEY,
   });
 
   return apiRoot
@@ -25,9 +24,9 @@ export const loginAnonymousCustomer = (request: MyCustomerSignin): Promise<Custo
     });
 };
 
-export const loginCustomer = (request: MyCustomerSignin): Promise<CustomerSignInResult> => {
+export const loginCustomer = async (request: MyCustomerSignin): Promise<CustomerSignInResult> => {
   const apiRoot = createApiBuilderFromCtpClient(loginUserCtpClient(request.email, request.password)).withProjectKey({
-    projectKey,
+    projectKey: PROJECT_KEY,
   });
 
   return apiRoot

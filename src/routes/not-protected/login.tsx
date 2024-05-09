@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
@@ -8,34 +8,34 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { LOGIN_FORM_INPUTS } from '@/consts/auth';
-import { loginCustomer } from '@/services/handlers/customerHandler';
+import { useAuth } from '@/provider/auth-provider';
+import { loginCustomer } from '@/services/customer-handler/customer-auther';
 
 // ? Придумать цикл
 const formSchema = z.object({
-  username: z.string(),
+  email: z.string(),
   password: z.string(),
 });
 
 export default function Login() {
+  const tokenStore = useAuth();
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
   });
 
-  const createCustomer = async (values: z.infer<typeof formSchema>) => {
-    const data = await loginCustomer({ email: values.username, password: values.password });
-    return data;
-  };
+  async function onSubmit({ email, password }: z.infer<typeof formSchema>) {
+    const data = await loginCustomer({ email, password });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const resp = await createCustomer(values);
-      console.log(resp.customer);
-    } catch (e) {
-      console.log(e);
+    console.log(data.customer);
+    if (data.customer) {
+      const token = localStorage.getItem('custTokenDevision');
+      tokenStore?.updateToken(token);
+      navigate('/', { replace: true });
     }
   }
 
