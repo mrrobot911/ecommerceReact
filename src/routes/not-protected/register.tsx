@@ -18,6 +18,14 @@ const formSchema = z.object({
   password: z.string(),
   'confirm password': z.string(),
   email: z.string(),
+  shippingStreet: z.string(),
+  shippingCity: z.string(),
+  shippingPostalCode: z.string(),
+  shippingCountry: z.string(),
+  billingStreet: z.string(),
+  billingCity: z.string(),
+  billingPostalCode: z.string(),
+  billingCountry: z.string(),
 });
 
 export default function Register() {
@@ -31,6 +39,14 @@ export default function Register() {
       password: '',
       'confirm password': '',
       email: '',
+      shippingStreet: '',
+      shippingCity: '',
+      shippingPostalCode: '',
+      shippingCountry: '',
+      billingStreet: '',
+      billingCity: '',
+      billingPostalCode: '',
+      billingCountry: '',
     },
   });
 
@@ -64,7 +80,7 @@ export default function Register() {
         <div className='mb-5'>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col items-center gap-y-8'>
-              {REGISTER_FORM_INPUTS.map(({ name, type }) => (
+              {REGISTER_FORM_INPUTS.map(({ name, type, placeholder }) => (
                 <FormField
                   control={form.control}
                   key={name}
@@ -73,7 +89,7 @@ export default function Register() {
                     <FormItem className='w-full'>
                       <FormLabel className='text-lg'>{name[0].toUpperCase() + name.slice(1)}</FormLabel>
                       <FormControl>
-                        <Input type={type} {...field} />
+                        <Input type={type} placeholder={placeholder} {...field} />
                       </FormControl>
                     </FormItem>
                   )}
