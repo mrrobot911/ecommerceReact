@@ -12,6 +12,24 @@ import { useAuth } from '@/provider/auth-provider';
 import { loginCustomer } from '@/services/customer-handler/customer-auther';
 import { createCustomer } from '@/services/customer-handler/customer-creator';
 
+interface FormInput {
+  name: keyof (typeof formSchema)['shape'];
+  text: string;
+  type: string;
+  placeholder: string;
+  style: string;
+}
+
+interface Block {
+  [key: string]: FormInput[];
+}
+
+const containerStyle: { [key: string]: string } = {
+  main: 'w-full',
+  shipping: 'w-1/2 p-4',
+  billing: 'w-1/2 p-4',
+};
+
 const formSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
@@ -56,30 +74,39 @@ export default function Register() {
     }
   }
 
+  const blocks: Block = REGISTER_FORM_INPUTS.reduce((acc: Block, input) => {
+    acc[input.style] = [...(acc[input.style] || []), input];
+    return acc;
+  }, {});
+
   return (
     <>
       <SEO
         title='Ecommerce Registration Page'
         description='Welcome to the Ecommerce Application! Register your account to continue...'
       />
-      <div className='max-w-[250px]'>
-        <div className='mb-5'>
+      <div className='max-w-[500px]'>
+        <div className='mb-5 flex'>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col items-center gap-y-8'>
-              {REGISTER_FORM_INPUTS.map(({ name, text, type, placeholder }) => (
-                <FormField
-                  control={form.control}
-                  key={name}
-                  name={name}
-                  render={({ field }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel className='text-lg'>{text}</FormLabel>
-                      <FormControl>
-                        <Input type={type} placeholder={placeholder} {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+            <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-row flex-wrap gap-y-8'>
+              {Object.keys(blocks).map((style) => (
+                <div key={style} className={containerStyle[style]}>
+                  {blocks[style].map(({ name, text, type, placeholder }) => (
+                    <FormField
+                      control={form.control}
+                      key={name}
+                      name={name}
+                      render={({ field }) => (
+                        <FormItem className='w-full'>
+                          <FormLabel className='text-lg'>{text}</FormLabel>
+                          <FormControl>
+                            <Input type={type} placeholder={placeholder} {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  ))}
+                </div>
               ))}
               <Button className='w-full text-lg font-medium uppercase' size='lg' type='submit'>
                 Sign up
