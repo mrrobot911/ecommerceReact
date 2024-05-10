@@ -11,7 +11,6 @@ import { LOGIN_FORM_INPUTS } from '@/consts/auth';
 import { useAuth } from '@/provider/auth-provider';
 import { loginCustomer } from '@/services/customer-handler/customer-auther';
 
-// ? Придумать цикл
 const formSchema = z.object({
   email: z.string(),
   password: z.string(),
@@ -22,10 +21,7 @@ export default function Login() {
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
+    defaultValues: LOGIN_FORM_INPUTS.reduce((acc, { name }) => ({ ...acc, [name]: '' }), {}),
   });
 
   async function onSubmit({ email, password }: z.infer<typeof formSchema>) {
@@ -48,14 +44,14 @@ export default function Login() {
         <div className='mb-5'>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col items-center gap-y-8'>
-              {LOGIN_FORM_INPUTS.map(({ name, type }) => (
+              {LOGIN_FORM_INPUTS.map(({ name, text, type }) => (
                 <FormField
                   control={form.control}
                   key={name}
                   name={name}
                   render={({ field }) => (
                     <FormItem className='w-full'>
-                      <FormLabel className='text-lg'>{name[0].toUpperCase() + name.slice(1)}</FormLabel>
+                      <FormLabel className='text-lg'>{text}</FormLabel>
                       <FormControl>
                         <Input type={type} {...field} />
                       </FormControl>

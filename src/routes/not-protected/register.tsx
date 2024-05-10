@@ -16,7 +16,7 @@ const formSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   password: z.string(),
-  'confirm password': z.string(),
+  confirmPassword: z.string(),
   email: z.string(),
   shippingStreet: z.string(),
   shippingCity: z.string(),
@@ -33,21 +33,7 @@ export default function Register() {
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      password: '',
-      'confirm password': '',
-      email: '',
-      shippingStreet: '',
-      shippingCity: '',
-      shippingPostalCode: '',
-      shippingCountry: '',
-      billingStreet: '',
-      billingCity: '',
-      billingPostalCode: '',
-      billingCountry: '',
-    },
+    defaultValues: REGISTER_FORM_INPUTS.reduce((acc, { name }) => ({ ...acc, [name]: '' }), {}),
   });
 
   async function onSubmit({ email, password, firstName, lastName }: z.infer<typeof formSchema>) {
@@ -80,14 +66,14 @@ export default function Register() {
         <div className='mb-5'>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col items-center gap-y-8'>
-              {REGISTER_FORM_INPUTS.map(({ name, type, placeholder }) => (
+              {REGISTER_FORM_INPUTS.map(({ name, text, type, placeholder }) => (
                 <FormField
                   control={form.control}
                   key={name}
                   name={name}
                   render={({ field }) => (
                     <FormItem className='w-full'>
-                      <FormLabel className='text-lg'>{name[0].toUpperCase() + name.slice(1)}</FormLabel>
+                      <FormLabel className='text-lg'>{text}</FormLabel>
                       <FormControl>
                         <Input type={type} placeholder={placeholder} {...field} />
                       </FormControl>
