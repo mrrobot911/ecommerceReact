@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Label } from '@radix-ui/react-label';
 import { z } from 'zod';
 
 import SEO from '@/components/seo';
@@ -28,6 +30,8 @@ const containerStyle: { [key: string]: string } = {
   main: 'w-full',
   shipping: 'w-1/2 p-4',
   billing: 'w-1/2 p-4',
+  billing_disabled: 'w-full',
+  shipping_disabled: 'invisible',
 };
 
 const formSchema = z.object({
@@ -49,13 +53,48 @@ const formSchema = z.object({
 export default function Register() {
   const tokenStore = useAuth();
   const navigate = useNavigate();
+  const [adress, setAdress] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: REGISTER_FORM_INPUTS.reduce((acc, { name }) => ({ ...acc, [name]: '' }), {}),
   });
 
-  async function onSubmit({ email, password, firstName, lastName }: z.infer<typeof formSchema>) {
-    const data = await createCustomer({ email, password, firstName, lastName })
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const {
+      email,
+      password,
+      firstName,
+      lastName,
+      shippingStreet,
+      shippingCity,
+      shippingPostalCode,
+      shippingCountry,
+      billingStreet,
+      billingCity,
+      billingPostalCode,
+      billingCountry,
+    } = values;
+    const shipping = {
+      streetName: shippingStreet,
+      city: shippingCity,
+      postalCode: shippingPostalCode,
+      country: shippingCountry,
+    };
+    const billing = {
+      streetName: billingStreet,
+      city: billingCity,
+      postalCode: billingPostalCode,
+      country: billingCountry,
+    };
+    const data = await createCustomer({
+      email,
+      password,
+      firstName,
+      lastName,
+      addresses: [adress ? billing : shipping, billing],
+      defaultShippingAddress: 0,
+      defaultBillingAddress: 1,
+    })
       .then((response) => {
         return response;
       })
@@ -88,26 +127,47 @@ export default function Register() {
       <div className='max-w-[500px]'>
         <div className='mb-5 flex'>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-row flex-wrap gap-y-8'>
-              {Object.keys(blocks).map((style) => (
-                <div key={style} className={containerStyle[style]}>
-                  {blocks[style].map(({ name, text, type, placeholder }) => (
-                    <FormField
-                      control={form.control}
-                      key={name}
-                      name={name}
-                      render={({ field }) => (
-                        <FormItem className='w-full'>
-                          <FormLabel className='text-lg'>{text}</FormLabel>
-                          <FormControl>
-                            <Input type={type} placeholder={placeholder} {...field} />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  ))}
-                </div>
-              ))}
+            <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-row flex-wrap gap-y-6'>
+              {Object.keys(blocks).map(
+                (style) =>
+                  (style !== 'shipping' || !adress) && (
+                    <div
+                      key={style}
+                      className={
+                        adress && style !== 'main' ? containerStyle[`${style}_disabled`] : containerStyle[style]
+                      }
+                    >
+                      {blocks[style].map(({ name, text, type, placeholder }) => (
+                        <FormField
+                          control={form.control}
+                          key={name}
+                          name={name}
+                          render={({ field }) => (
+                            <FormItem className='w-full'>
+                              <FormLabel className='text-lg'>{text}</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type={type}
+                                  className={style !== 'main' ? 'h-8' : ''}
+                                  placeholder={placeholder}
+                                  {...field}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      ))}
+                    </div>
+                  ),
+              )}
+              <Label className='flex w-full flex-row text-sm'>
+                <Input
+                  type='checkbox'
+                  className='h-5 w-1/3 py-0'
+                  onChange={() => setAdress((prevAdressState) => !prevAdressState)}
+                />
+                Shipping adress same as billing
+              </Label>
               <Button className='w-full text-lg font-medium uppercase' size='lg' type='submit'>
                 Sign up
               </Button>
